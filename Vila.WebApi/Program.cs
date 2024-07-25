@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Vila.WebApi.Context;
+using Vila.WebApi.Mappings;
 using Vila.WebApi.Services.Vila;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +14,13 @@ services.AddDbContext<DataContext>(options =>
 });
 
 #region Dependency 
-    services.AddTransient<IVilaService, VilaService>();
+services.AddTransient<IVilaService, VilaService>();
 #endregion
+
+#region AutoMapper
+services.AddAutoMapper(typeof(ModelsMapper));
+#endregion
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
