@@ -47,5 +47,56 @@ namespace Vila.WebApi.Controllers
 
             return Ok(model);
         }
+
+        [HttpGet("[action]/{VilaId:int}")]
+        public IActionResult GetDetails([FromRoute] int vilaId)
+        {
+
+            var vila = _vila.GetById(vilaId);
+            if (vila == null) return NotFound();
+            var model = _mapper.Map<VilaDto>(vila);
+            return Ok(model);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetVilaAddress([FromQuery] int vilaId)
+        {
+
+            var vila = _vila.GetById(vilaId);
+            if (vila == null) return NotFound();
+            return Ok(new { id = vila.VilaId, state = vila.State, city = vila.City, address = vila.Address });
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetVilaMobile([FromHeader] int VilaId)
+        {
+            var vila = _vila.GetById(VilaId);
+            if (vila == null) return NotFound();
+            return Ok(new { id = vila.VilaId, mobile = vila.Mobile });
+        }
+        //[HttpPost]
+        //public IActionResult Create([FromForm] VilaDto model)
+        //{
+        //    var vila = _mapper.Map<Model.Vila>(model);
+        //    _vila.Create(vila);
+        //    return Ok(new { status = true, message = "عملیات با موفقیت انجام شد" });
+        //}
+
+        [HttpPost]
+        public IActionResult Create([FromBody] VilaDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var vila = _mapper.Map<Model.Vila>(model);
+            if (_vila.Create(vila))
+            {
+                ModelState.AddModelError("", "عملیات با موفقیت انجام شد.");
+                return StatusCode(201, ModelState);
+            }
+            ModelState.AddModelError("", "مشکل از سمت سرور میباشد، لطفا مجددا تلاش فرمایید.");
+            return StatusCode(500, ModelState);
+        }
     }
 }
