@@ -13,7 +13,7 @@ namespace Vila.WebApi.Mappings
                 .ReverseMap()
                 .ForMember(x => x.City, d => d.MapFrom(des => des.Shahr));
 
-            CreateMap<Models.Detail, DetailDto>();
+            CreateMap<Models.Detail, DetailDto>().ReverseMap();
         }
     }
 }

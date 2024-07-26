@@ -22,7 +22,7 @@ namespace Vila.WebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{vilaId:int}")]
+        [HttpGet("[action]/{vilaId:int}")]
         public IActionResult GetAllVilaDetails(int vilaId)
         {
             var vila = _vila.GetById(vilaId);
@@ -36,6 +36,67 @@ namespace Vila.WebApi.Controllers
                 model.Add(_mapper.Map<DetailDto>(x));
             });
             return Ok(model);
+        }
+        [HttpGet("[action]/{detailId:int}")]
+        public IActionResult GetById(int detailId)
+        {
+            var detail = _detail.GetById(detailId);
+            if (detail == null) return NotFound();
+            var model = _mapper.Map<DetailDto>(detail);
+            return StatusCode(200, model);
+        }
+        [HttpPost]
+        public IActionResult Create([FromBody] DetailDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var detail = _mapper.Map<Models.Detail>(model);
+            if (_detail.Create(detail))
+            {
+                return StatusCode(201);
+            }
+            ModelState.AddModelError("", "مشکل از سمت سرور میباشد، لطفا مجددا تلاش فرمایید.");
+            return StatusCode(500, ModelState);
+        }
+
+        [HttpPatch("{detailId:int}")]
+        public IActionResult Update(int detailId, [FromBody] DetailDto model)
+        {
+            if (detailId != model.DetailId)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var detail = _mapper.Map<Models.Detail>(model);
+            if (_detail.Update(detail))
+            {
+                return StatusCode(204);
+
+            }
+            ModelState.AddModelError("", "مشکل از سمت سرور میباشد، لطفا مجددا تلاش فرمایید.");
+            return StatusCode(500, ModelState);
+        }
+
+        [HttpDelete("{detailId:int}")]
+        public IActionResult Remove(int detailId)
+        {
+            var detail = _detail.GetById(detailId);
+            if (detail == null)
+            {
+                return NotFound();
+            }
+
+            if (_detail.Delete(detail))
+            {
+                return StatusCode(204);
+
+            }
+            ModelState.AddModelError("", "مشکل از سمت سرور میباشد، لطفا مجددا تلاش فرمایید.");
+            return StatusCode(500, ModelState);
         }
     }
 }
