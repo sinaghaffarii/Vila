@@ -5,7 +5,7 @@ namespace Vila.WebApi.Dtos
 {
     public class VilaDto
     {
-       
+
         public int VilaId { get; set; }
         [Required(ErrorMessage = "نام ویلا اجباری است.")]
         [MaxLength(255, ErrorMessage = "نام ویلا نباید بیش از 255 حرف باشد.")]
@@ -23,9 +23,12 @@ namespace Vila.WebApi.Dtos
         [MaxLength(11, ErrorMessage = "شماره تماس وارد شده نباید بیش از 11 کاراکتر باشد.")]
         [MinLength(11, ErrorMessage = "شماره تماس وارد شده نباید کمتر از 11 کاراکتر باشد.")]
         public string Mobile { get; set; }
+        [Required(ErrorMessage = "قیمت کرایه روزانه ویلا اجباری است.")]
+        public long DayPrice { get; set; }
+        [Required(ErrorMessage = "قیمت فروش ویلا اجباری است.")]
+        public long SellPrice { get; set; }
         [Required]
         [DateValidation]
         public DateTime BuildDate { get; set; }
     }
 }
- 

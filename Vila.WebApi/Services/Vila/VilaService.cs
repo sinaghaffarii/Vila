@@ -13,24 +13,24 @@ namespace Vila.WebApi.Services.Vila
             _context = context;
         }
 
-        public bool Create(Model.Vila model)
+        public bool Create(Models.Vila model)
         {
             _context.Vilas.Add(model);
             return Save();
         }
 
-        public bool delete(Model.Vila model)
+        public bool delete(Models.Vila model)
         {
             _context.Vilas.Remove(model);
             return Save();
         }
 
-        public List<Model.Vila> GetAll()
+        public List<Models.Vila> GetAll()
         {
             return _context.Vilas.ToList();
         }
 
-        public Model.Vila GetById(int id)
+        public Models.Vila GetById(int id)
         {
             return _context.Vilas.FirstOrDefault(v => v.VilaId == id); 
         }
@@ -39,7 +39,7 @@ namespace Vila.WebApi.Services.Vila
             _context.SaveChanges() >= 0 ? true : false;
 
 
-        public bool Update(Model.Vila model)
+        public bool Update(Models.Vila model)
         {
             _context.Vilas.Update(model);
             return Save();

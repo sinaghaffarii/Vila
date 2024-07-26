@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Vila.WebApi.Dtos;
 using Vila.WebApi.Services.Vila;
 using AutoMapper;
+using System.Threading.Tasks.Dataflow;
 
 namespace Vila.WebApi.Controllers
 {
@@ -48,7 +49,7 @@ namespace Vila.WebApi.Controllers
             return Ok(model);
         }
 
-        [HttpGet("[action]/{VilaId:int}")]
+        [HttpGet("[action]/{VilaId:int}", Name = "GetDetails")]
         public IActionResult GetDetails([FromRoute] int vilaId)
         {
 
@@ -77,7 +78,7 @@ namespace Vila.WebApi.Controllers
         //[HttpPost]
         //public IActionResult Create([FromForm] VilaDto model)
         //{
-        //    var vila = _mapper.Map<Model.Vila>(model);
+        //    var vila = _mapper.Map<Models.Vila>(model);
         //    _vila.Create(vila);
         //    return Ok(new { status = true, message = "عملیات با موفقیت انجام شد" });
         //}
@@ -89,11 +90,48 @@ namespace Vila.WebApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var vila = _mapper.Map<Model.Vila>(model);
+            var vila = _mapper.Map<Models.Vila>(model);
             if (_vila.Create(vila))
             {
-                ModelState.AddModelError("", "عملیات با موفقیت انجام شد.");
-                return StatusCode(201, ModelState);
+                return CreatedAtRoute("GetDetails", new { vilaId = vila.VilaId }, _mapper.Map<VilaDto>(vila));
+            }
+            ModelState.AddModelError("", "مشکل از سمت سرور میباشد، لطفا مجددا تلاش فرمایید.");
+            return StatusCode(500, ModelState);
+        }
+
+        [HttpPatch("{vilaId:int}")]
+        public IActionResult Update(int vilaId, [FromBody] VilaDto model)
+        {
+            if(vilaId != model.VilaId)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var vila = _mapper.Map<Models.Vila>(model);
+            if (_vila.Update(vila))
+            {
+                return StatusCode(204);
+
+            }
+            ModelState.AddModelError("", "مشکل از سمت سرور میباشد، لطفا مجددا تلاش فرمایید.");
+            return StatusCode(500, ModelState);
+        }
+
+        [HttpDelete("{vilaId:int}")]
+        public IActionResult Remove(int vilaId)
+        {
+            var vila = _vila.GetById(vilaId);
+            if(vila == null)
+            {
+                return NotFound();
+            }
+       
+            if (_vila.delete(vila))
+            {
+                return StatusCode(204);
+
             }
             ModelState.AddModelError("", "مشکل از سمت سرور میباشد، لطفا مجددا تلاش فرمایید.");
             return StatusCode(500, ModelState);

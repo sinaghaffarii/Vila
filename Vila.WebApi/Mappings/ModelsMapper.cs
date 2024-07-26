@@ -8,10 +8,12 @@ namespace Vila.WebApi.Mappings
     {
         public ModelsMapper()
         {
-            CreateMap<Model.Vila, VilaDto>()
+            CreateMap<Models.Vila, VilaDto>()
                 .ForMember(x => x.Shahr, d => d.MapFrom(des => des.City))
                 .ReverseMap()
                 .ForMember(x => x.City, d => d.MapFrom(des => des.Shahr));
+
+            CreateMap<Models.Detail, DetailDto>();
         }
     }
 }

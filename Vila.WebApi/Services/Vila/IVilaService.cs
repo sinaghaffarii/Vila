@@ -4,11 +4,11 @@ namespace Vila.WebApi.Services.Vila
 {
     public interface IVilaService
     {
-        List<Model.Vila> GetAll();
-        Model.Vila GetById(int id);
-        bool Create(Model.Vila model);
-        bool Update(Model.Vila model);
-        bool delete(Model.Vila model);
+        List<Models.Vila> GetAll();
+        Models.Vila GetById(int id);
+        bool Create(Models.Vila model);
+        bool Update(Models.Vila model);
+        bool delete(Models.Vila model);
         bool Save();
     }
 }
