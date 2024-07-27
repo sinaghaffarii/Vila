@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Vila.WebApi.Context;
 using Vila.WebApi.Mappings;
 using Vila.WebApi.Services.Detail;
@@ -23,11 +25,36 @@ services.AddTransient<IDetailService, DetailService>();
 services.AddAutoMapper(typeof(ModelsMapper));
 #endregion
 
+#region Swagger
+services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("VilaOpenApi",
+        new OpenApiInfo
+        {
+            Title = "Vila Api",
+            Version = "v1",
+            Contact = new OpenApiContact
+            {
+                Name = "Sina Ghaffari",
+                Email = "Sinaghaffari.dev@gmail.com"
+            }
+
+        });
+
+    var pathComment = Path.Combine(AppContext.BaseDirectory, "SwaggerComments.xml");
+    option.IncludeXmlComments(pathComment);
+});
+#endregion
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-
+    app.UseSwagger();
+    app.UseSwaggerUI(x =>
+    {
+        x.SwaggerEndpoint("/swagger/VilaOpenApi/swagger.json", "Vila Open Api");
+    });
 }
 
 app.UseAuthorization();

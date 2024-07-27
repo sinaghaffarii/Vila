@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Vila.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:Vila.WebApi.Controllers.VilaController.GetAll">
+            <summary>
+            دریافت لیست تمام ویلا ها 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Vila.WebApi.Controllers.VilaController.GetDetails(System.Int32)">
+            <summary>
+            دریافت یک ویلا و آی دی ویلا
+            </summary>
+            <param name="vilaId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Vila.WebApi.Controllers.VilaController.Create(Vila.WebApi.Dtos.VilaDto)">
+            <summary>
+            ایجاد یک ویلای جدید
+            </summary>
+            <param name="model">اطلاعات ویلا (VilaDto)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Vila.WebApi.Controllers.VilaController.Update(System.Int32,Vila.WebApi.Dtos.VilaDto)">
+            <summary>
+            ویرایش ویلا
+            </summary>
+            <param name="vilaId">آی دی ویلا</param>
+            <param name="model">اطاعات ویلا(VilaDto)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Vila.WebApi.Controllers.VilaController.Remove(System.Int32)">
+            <summary>
+            حذف ویلا
+            </summary>
+            <param name="vilaId">کلید ویلا</param>
+            <returns></returns>
+        </member>
+        <member name="T:Vila.WebApi.Migrations.AddVilaTable">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.AddVilaTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.AddVilaTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.AddVilaTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Vila.WebApi.Migrations.dbodetails">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.dbodetails.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.dbodetails.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.dbodetails.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Vila.WebApi.Migrations.AddVilaPrice">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.AddVilaPrice.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.AddVilaPrice.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.AddVilaPrice.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

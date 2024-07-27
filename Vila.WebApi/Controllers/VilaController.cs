@@ -19,6 +19,11 @@ namespace Vila.WebApi.Controllers
             _vila = vila;
             _mapper = mapper;
         }
+        /// <summary>
+        /// دریافت لیست تمام ویلا ها 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
         public IActionResult GetAll()
         {
 
@@ -48,7 +53,11 @@ namespace Vila.WebApi.Controllers
 
             return Ok(model);
         }
-
+        /// <summary>
+        /// دریافت یک ویلا و آی دی ویلا
+        /// </summary>
+        /// <param name="vilaId"></param>
+        /// <returns></returns>
         [HttpGet("[action]/{VilaId:int}", Name = "GetDetails")]
         public IActionResult GetDetails([FromRoute] int vilaId)
         {
@@ -82,7 +91,11 @@ namespace Vila.WebApi.Controllers
         //    _vila.Create(vila);
         //    return Ok(new { status = true, message = "عملیات با موفقیت انجام شد" });
         //}
-
+        /// <summary>
+        /// ایجاد یک ویلای جدید
+        /// </summary>
+        /// <param name="model">اطلاعات ویلا (VilaDto)</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Create([FromBody] VilaDto model)
         {
@@ -98,7 +111,12 @@ namespace Vila.WebApi.Controllers
             ModelState.AddModelError("", "مشکل از سمت سرور میباشد، لطفا مجددا تلاش فرمایید.");
             return StatusCode(500, ModelState);
         }
-
+        /// <summary>
+        /// ویرایش ویلا
+        /// </summary>
+        /// <param name="vilaId">آی دی ویلا</param>
+        /// <param name="model">اطاعات ویلا(VilaDto)</param>
+        /// <returns></returns>
         [HttpPatch("{vilaId:int}")]
         public IActionResult Update(int vilaId, [FromBody] VilaDto model)
         {
@@ -118,7 +136,11 @@ namespace Vila.WebApi.Controllers
             ModelState.AddModelError("", "مشکل از سمت سرور میباشد، لطفا مجددا تلاش فرمایید.");
             return StatusCode(500, ModelState);
         }
-
+        /// <summary>
+        /// حذف ویلا
+        /// </summary>
+        /// <param name="vilaId">کلید ویلا</param>
+        /// <returns></returns>
         [HttpDelete("{vilaId:int}")]
         public IActionResult Remove(int vilaId)
         {
