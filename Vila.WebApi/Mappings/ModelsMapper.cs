@@ -14,6 +14,7 @@ namespace Vila.WebApi.Mappings
                 .ForMember(x => x.City, d => d.MapFrom(des => des.Shahr));
 
             CreateMap<Models.Detail, DetailDto>().ReverseMap();
+            CreateMap<Models.Vila, VilaSearchDto>();
         }
     }
 }

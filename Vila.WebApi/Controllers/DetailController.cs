@@ -23,6 +23,8 @@ namespace Vila.WebApi.Controllers
         }
 
         [HttpGet("[action]/{vilaId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<DetailDto>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetAllVilaDetails(int vilaId)
         {
             var vila = _vila.GetById(vilaId);
@@ -37,7 +39,7 @@ namespace Vila.WebApi.Controllers
             });
             return Ok(model);
         }
-        [HttpGet("[action]/{detailId:int}")]
+        [HttpGet("[action]/{detailId:int}", Name = "GetById")]
         public IActionResult GetById(int detailId)
         {
             var detail = _detail.GetById(detailId);
@@ -46,6 +48,9 @@ namespace Vila.WebApi.Controllers
             return StatusCode(200, model);
         }
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(DetailDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Create([FromBody] DetailDto model)
         {
             if (!ModelState.IsValid)
@@ -55,7 +60,8 @@ namespace Vila.WebApi.Controllers
             var detail = _mapper.Map<Models.Detail>(model);
             if (_detail.Create(detail))
             {
-                return StatusCode(201);
+                var dtoDetail = _mapper.Map<DetailDto>(detail);
+                return CreatedAtRoute("GetById", new { detailId = dtoDetail.DetailId }, dtoDetail);
             }
             ModelState.AddModelError("", "مشکل از سمت سرور میباشد، لطفا مجددا تلاش فرمایید.");
             return StatusCode(500, ModelState);
