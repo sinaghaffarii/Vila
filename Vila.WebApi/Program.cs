@@ -25,6 +25,14 @@ services.AddTransient<IDetailService, DetailService>();
 services.AddAutoMapper(typeof(ModelsMapper));
 #endregion
 
+#region Versioning
+services.AddApiVersioning(option =>
+{
+    option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    option.AssumeDefaultVersionWhenUnspecified = true;
+});
+#endregion
+
 #region Swagger
 services.AddSwaggerGen(option =>
 {

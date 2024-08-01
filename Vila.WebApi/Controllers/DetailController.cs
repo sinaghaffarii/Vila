@@ -7,7 +7,8 @@ using Vila.WebApi.Services.Vila;
 
 namespace Vila.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:ApiVersion}/[controller]")]
+    //[ApiVersion("1.0")]
     [ApiController]
     public class DetailController : ControllerBase
     {

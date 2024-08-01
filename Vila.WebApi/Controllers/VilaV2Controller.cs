@@ -4,9 +4,10 @@ using Vila.WebApi.Services.Vila;
 
 namespace Vila.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:ApiVersion}/[controller]")]
+    [ApiVersion("2.0")]
     [ApiController]
-    public class VilaV2Controller : ControllerBase
+    public class VilaV2Controller : ControllerBase 
     {
         private readonly IVilaService _vila;
 

@@ -8,7 +8,8 @@ using System.Threading.Tasks.Dataflow;
 namespace Vila.WebApi.Controllers
 {
     //[Route("api/[controller]")]
-    [Route("api/Vila")]
+    [Route("api/v{version:ApiVersion}/Vila")]
+    //[ApiVersion("1.0")]
     [ApiController]
     public class VilaController : ControllerBase
     {
