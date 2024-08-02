@@ -1,8 +1,10 @@
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text;
 using Vila.WebApi.Context;
 using Vila.WebApi.Mappings;
 using Vila.WebApi.Services.Customer;
@@ -49,6 +51,35 @@ services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerVilaDocument>
 services.AddSwaggerGen();
 #endregion
 
+#region Jwt
+
+var key = Encoding.ASCII.GetBytes("This Is My Jwt Secret Key For Admin: Sina_Ghaffari");
+
+services.AddAuthentication(x =>
+{
+    x.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(option =>
+{
+    option.TokenValidationParameters = new TokenValidationParameters
+    {
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuerSigningKey = true,
+        // این 4 تا مقدار پایینی لزومی بر بودنشون نیست.
+        ValidIssuer = "Sina.dev",
+        ValidateIssuer = true,
+        ValidAudience = "webApi",
+        ValidateAudience = true,
+        // این رو false بذاریم توکنش هیچوقت تموم نمیشه.
+        ValidateLifetime = true,
+    }; 
+
+
+});
+
+#endregion
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -68,6 +99,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

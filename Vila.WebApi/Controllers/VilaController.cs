@@ -4,6 +4,7 @@ using Vila.WebApi.Dtos;
 using Vila.WebApi.Services.Vila;
 using AutoMapper;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Vila.WebApi.Controllers
 {
@@ -25,6 +26,7 @@ namespace Vila.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("[action]")]
+        [Authorize]
         public IActionResult GetAll()
         {
 

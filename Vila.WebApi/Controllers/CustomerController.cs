@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 using Vila.WebApi.CustomerModels;
 using Vila.WebApi.Services.Customer;
 
@@ -26,14 +27,32 @@ namespace Vila.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(_customer.Register(model))
+            if (_customer.Register(model))
             {
                 return StatusCode(201);
-            }else
+            }
+            else
             {
                 ModelState.AddModelError("", "خطای شبکه!");
                 return StatusCode(500, ModelState);
             }
+        }
+        [HttpPost("Login")]
+        public IActionResult Login([FromBody] RegisterModel login)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_customer.PasswordIsCorrect(login.Mobile, login.Pass))
+            {
+                ModelState.AddModelError("model.mobile", "کاربری یافت نشد :Error.");
+                return BadRequest(ModelState);
+            }
+
+            var user = _customer.Login(login.Mobile, login.Pass);
+            if (user == null) return NotFound();
+
+            return Ok(user);
         }
     }
 }

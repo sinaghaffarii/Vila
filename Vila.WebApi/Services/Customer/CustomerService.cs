@@ -1,4 +1,8 @@
-﻿using Vila.WebApi.Context;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Vila.WebApi.Context;
 using Vila.WebApi.CustomerModels;
 using Vila.WebApi.Models;
 using Vila.WebApi.Utility;
@@ -17,12 +21,37 @@ namespace Vila.WebApi.Services.Customer
 
         public Customers Login(string mobile, string pass)
         {
-            throw new NotImplementedException();
+            var hashPass = PasswordHelper.EncodeProSecurity(pass.Trim());
+            var customer = _context.Customers.SingleOrDefault(c => c.Mobile == mobile && c.Pass == hashPass);
+            if (customer == null) return null;
+
+            var key = Encoding.ASCII.GetBytes("This Is My Jwt Secret Key For Admin: Sina_Ghaffari");
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescription = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, customer.CustomerId.ToString()),
+                    new Claim(ClaimTypes.Role, customer.Role.ToString())
+                }),
+                Expires = DateTime.Now.AddDays(7),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature
+                    ),
+                Issuer = "Sina.dev",
+                Audience = "webApi"
+            };
+            var token = tokenHandler.CreateToken(tokenDescription);
+            customer.JwtSecret = tokenHandler.WriteToken(token); 
+            return customer;
         }
 
         public bool PasswordIsCorrect(string mobile, string pass)
         {
-            throw new NotImplementedException();
+            var hashPass = PasswordHelper.EncodeProSecurity(pass.Trim());
+            return _context.Customers.Any(c => c.Mobile.Trim() == mobile.Trim() && c.Pass == hashPass);
         }
 
         public bool Register(RegisterModel model)
@@ -34,7 +63,7 @@ namespace Vila.WebApi.Services.Customer
                 Pass = hashPass,
                 Role = "user"
             };
-           
+
 
             try
             {
@@ -46,9 +75,6 @@ namespace Vila.WebApi.Services.Customer
             {
                 return false;
             }
-
         }
-
-      
     }
 }
