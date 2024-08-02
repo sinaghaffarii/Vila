@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Vila.WebApi.Context;
 using Vila.WebApi.Mappings;
+using Vila.WebApi.Services.Customer;
 using Vila.WebApi.Services.Detail;
 using Vila.WebApi.Services.Vila;
 using Vila.WebApi.Utility;
@@ -22,6 +23,7 @@ services.AddDbContext<DataContext>(options =>
 #region Dependency 
 services.AddTransient<IVilaService, VilaService>();
 services.AddTransient<IDetailService, DetailService>();
+services.AddTransient<ICustomerService, CustomerService>();
 #endregion
 
 #region AutoMapper

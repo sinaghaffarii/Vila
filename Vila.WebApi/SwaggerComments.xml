@@ -75,5 +75,17 @@
         <member name="M:Vila.WebApi.Migrations.AddVilaPrice.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:Vila.WebApi.Migrations.addcustomer">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.addcustomer.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.addcustomer.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Vila.WebApi.Migrations.addcustomer.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
