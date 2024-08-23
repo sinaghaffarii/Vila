@@ -53,7 +53,13 @@ services.AddSwaggerGen();
 
 #region Jwt
 
-var key = Encoding.ASCII.GetBytes("This Is My Jwt Secret Key For Admin: Sina_Ghaffari");
+var JwtSettingSection = builder.Configuration.GetSection("JWTSettings");
+
+services.Configure<JWTSettings>(JwtSettingSection);
+
+var jwtsetting = JwtSettingSection.Get<JWTSettings>();
+
+var key = Encoding.ASCII.GetBytes(jwtsetting.Secret);
 
 services.AddAuthentication(x =>
 {
@@ -67,9 +73,9 @@ services.AddAuthentication(x =>
         IssuerSigningKey = new SymmetricSecurityKey(key),
         ValidateIssuerSigningKey = true,
         // این 4 تا مقدار پایینی لزومی بر بودنشون نیست.
-        ValidIssuer = "Sina.dev",
+        ValidIssuer = jwtsetting.Issuer,
         ValidateIssuer = true,
-        ValidAudience = "webApi",
+        ValidAudience = jwtsetting.Audience,
         ValidateAudience = true,
         // این رو false بذاریم توکنش هیچوقت تموم نمیشه.
         ValidateLifetime = true,

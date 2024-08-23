@@ -39,6 +39,20 @@
             <param name="vilaId">کلید ویلا</param>
             <returns></returns>
         </member>
+        <member name="M:Vila.WebApi.Controllers.VilaV2Controller.search(System.Int32,System.String,System.Int32)">
+            <summary>
+            جست و جو
+            </summary>
+            <param name="pageId">صفحه چندم؟</param>
+            <param name="filter">متن جست و جو</param>
+            <param name="take">تعداد نمایش</param>
+            <returns></returns>
+        </member>
+        <member name="P:Vila.WebApi.Dtos.LoginResultDto.JwtSecret">
+            <summary>
+            توکی احراز هویت
+            </summary>
+        </member>
         <member name="T:Vila.WebApi.Migrations.AddVilaTable">
             <inheritdoc />
         </member>

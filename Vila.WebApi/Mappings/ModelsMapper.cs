@@ -15,6 +15,7 @@ namespace Vila.WebApi.Mappings
 
             CreateMap<Models.Detail, DetailDto>().ReverseMap();
             CreateMap<Models.Vila, VilaSearchDto>();
+            CreateMap<Models.Customers, LoginResultDto>();
         }
     }
 }

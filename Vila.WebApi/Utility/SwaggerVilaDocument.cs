@@ -30,9 +30,35 @@ namespace Vila.WebApi.Utility
                 });
             }
 
+
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Please enter 'Bearer' [space] and then your token",
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+             {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
+
+
             var pathComment = Path.Combine(AppContext.BaseDirectory, "SwaggerComments.xml");
             options.IncludeXmlComments(pathComment);
         }
 
     }
 }
+ 

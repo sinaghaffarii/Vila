@@ -25,6 +25,7 @@ namespace Vila.WebApi.Controllers
         /// دریافت لیست تمام ویلا ها 
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "admin")]
         [HttpGet("[action]")]
         [Authorize]
         public IActionResult GetAll()
@@ -62,6 +63,7 @@ namespace Vila.WebApi.Controllers
         /// <param name="vilaId"></param>
         /// <returns></returns>
         [HttpGet("[action]/{VilaId:int}", Name = "GetDetails")]
+        [Authorize]
         public IActionResult GetDetails([FromRoute] int vilaId)
         {
 
@@ -100,6 +102,7 @@ namespace Vila.WebApi.Controllers
         /// <param name="model">اطلاعات ویلا (VilaDto)</param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Create([FromBody] VilaDto model)
         {
             if (!ModelState.IsValid)
@@ -121,6 +124,7 @@ namespace Vila.WebApi.Controllers
         /// <param name="model">اطاعات ویلا(VilaDto)</param>
         /// <returns></returns>
         [HttpPatch("{vilaId:int}")]
+        [Authorize(Roles = "admin")]
         public IActionResult Update(int vilaId, [FromBody] VilaDto model)
         {
             if(vilaId != model.VilaId)
@@ -145,6 +149,7 @@ namespace Vila.WebApi.Controllers
         /// <param name="vilaId">کلید ویلا</param>
         /// <returns></returns>
         [HttpDelete("{vilaId:int}")]
+        [Authorize(Roles = "admin")]
         public IActionResult Remove(int vilaId)
         {
             var vila = _vila.GetById(vilaId);

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Vila.WebApi.Paging;
 using Vila.WebApi.Services.Vila;
 
 namespace Vila.WebApi.Controllers
@@ -17,6 +19,10 @@ namespace Vila.WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
+        [ProducesResponseType(200, Type = typeof(VilaAdminPaging))]
+        [ProducesResponseType(400)]
+
         public IActionResult search(int pageId = 1, string? filter = "", int take = 2)
         {
             if (pageId < 1 || take < 1) return BadRequest();

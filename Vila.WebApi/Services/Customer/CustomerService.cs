@@ -1,9 +1,12 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using AutoMapper;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Vila.WebApi.Context;
 using Vila.WebApi.CustomerModels;
+using Vila.WebApi.Dtos;
 using Vila.WebApi.Models;
 using Vila.WebApi.Utility;
 
@@ -12,20 +15,24 @@ namespace Vila.WebApi.Services.Customer
     public class CustomerService : ICustomerService
     {
         private readonly DataContext _context;
-        public CustomerService(DataContext context)
+        private readonly JWTSettings _setting;
+        private readonly IMapper _mapper;
+        public CustomerService(DataContext context,IMapper mapper, IOptions<JWTSettings> setting)
         {
             _context = context;
+            _setting = setting.Value;
+            _mapper = mapper;
         }
         public bool ExistMobile(string mobile) =>
             _context.Customers.Any(x => x.Mobile.Trim() == mobile.Trim());
 
-        public Customers Login(string mobile, string pass)
+        public LoginResultDto Login(string mobile, string pass)
         {
             var hashPass = PasswordHelper.EncodeProSecurity(pass.Trim());
             var customer = _context.Customers.SingleOrDefault(c => c.Mobile == mobile && c.Pass == hashPass);
             if (customer == null) return null;
 
-            var key = Encoding.ASCII.GetBytes("This Is My Jwt Secret Key For Admin: Sina_Ghaffari");
+            var key = Encoding.ASCII.GetBytes(_setting.Secret);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescription = new SecurityTokenDescriptor()
@@ -40,12 +47,12 @@ namespace Vila.WebApi.Services.Customer
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature
                     ),
-                Issuer = "Sina.dev",
-                Audience = "webApi"
+                Issuer = _setting.Issuer,
+                Audience = _setting.Audience,
             };
             var token = tokenHandler.CreateToken(tokenDescription);
             customer.JwtSecret = tokenHandler.WriteToken(token); 
-            return customer;
+            return _mapper.Map<LoginResultDto>(customer);
         }
 
         public bool PasswordIsCorrect(string mobile, string pass)

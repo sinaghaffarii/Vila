@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Vila.WebApi.Dtos;
@@ -10,6 +11,7 @@ namespace Vila.WebApi.Controllers
     [Route("api/v{version:ApiVersion}/[controller]")]
     //[ApiVersion("1.0")]
     [ApiController]
+    [Authorize]
     public class DetailController : ControllerBase
     {
         private readonly IDetailService _detail;
